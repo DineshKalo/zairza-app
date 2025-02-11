@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:zairza_app/common/widgets/tags.dart';
 import 'package:zairza_app/constants/global_variables.dart';
 
+import '../../models/event_model.dart';
+
 class HomeCard extends StatelessWidget {
-  const HomeCard({super.key});
+  final Event event;
+  const HomeCard({super.key, required this.event});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +15,7 @@ class HomeCard extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, '/home_card');
+        Navigator.pushNamed(context, '/home_card', arguments: event.id);
       },
       child: Column(
         children: [
@@ -39,9 +42,15 @@ class HomeCard extends StatelessWidget {
                       topLeft: Radius.circular(8),
                       topRight: Radius.circular(8),
                     ),
-                    child: Image.asset(
-                      'assets/images/HomeCard1.png',
+                    child:Image.network(
+                      event.eventImg, // Use event image from API
                       fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          'assets/images/HomeCard1.png', // Fallback image
+                          fit: BoxFit.cover,
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -65,8 +74,8 @@ class HomeCard extends StatelessWidget {
                     horizontal: 16,
                     vertical: 8,
                   ),
-                  child: const Text(
-                    "20th Feb 2023",
+                  child:  Text(
+                    _formatDate(event.dateAndTime),
                     style: GlobalVariables.textBold_14,
                   ),
                 ),
@@ -93,7 +102,7 @@ class HomeCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "HARDWARE",
+                  event.wing.toUpperCase(),
                   style: GlobalVariables.textMedium_12.copyWith(
                     color: GlobalVariables.primaryColor,
                     height: 1,
@@ -102,19 +111,19 @@ class HomeCard extends StatelessWidget {
                 SizedBox(
                   width: width * 0.5390625,
                   child: Text(
-                    "Internet of things (IoT) Workshop",
+                    event.title,
                     style: GlobalVariables.textMedium_16.copyWith(height: 1.35),
                   ),
                 ),
                 SizedBox(height: height * 0.00643776824),
-                const Row(
+                Row(
                   children: [
-                    Tags(tagName: 'hardware'),
-                    Padding(
+                    Tags(tagName:event.wing),
+                    const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 4.0),
-                      child: Tags(tagName: 'arduino'),
+                      child: Tags(tagName: '...'),
                     ),
-                    Tags(tagName: '...'),
+
                   ],
                 ),
               ],
@@ -124,4 +133,16 @@ class HomeCard extends StatelessWidget {
       ),
     );
   }
+}
+
+String _formatDate(DateTime date) {
+  return "${date.day}th ${_getMonthName(date.month)} ${date.year}";
+}
+
+String _getMonthName(int month) {
+  const months = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ];
+  return months[month - 1];
 }

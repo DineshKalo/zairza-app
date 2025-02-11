@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:zairza_app/constants/global_variables.dart';
 
-class BlogCard extends StatelessWidget {
-  const BlogCard({super.key});
+import '../../models/blog_model.dart';
 
+class BlogCard extends StatelessWidget {
+  final Blog blog;
+
+  const BlogCard({Key? key, required this.blog}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -25,23 +28,25 @@ class BlogCard extends StatelessWidget {
                         topLeft: Radius.circular(6),
                         topRight: Radius.circular(6)),
                     child: Image.asset('assets/images/blog_image.png',
-                        fit: BoxFit.fill)),
+                        fit: BoxFit.cover)),
               ),
               Container(
                 width: width * 0.55813953488,
                 decoration: const BoxDecoration(
                     border: BorderDirectional(top: BorderSide(width: 2))),
-                child: const Padding(
-                  padding: EdgeInsets.all(16.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        'Flutter Vs React Native',
+                       Text(
+                        blog.title,
                         style: GlobalVariables.textBold_14,
                       ),
+                      const SizedBox(height: 4),
                       Text(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit xfdsqusn qdodndo uq2dhd',
+                        blog.description,
                         style: GlobalVariables.textRegular_12,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -75,12 +80,12 @@ class BlogCard extends StatelessWidget {
                 horizontal: 16,
                 vertical: 8,
               ),
-              child: const Row(
+              child:  Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Hardware", style: GlobalVariables.textBold_14),
+                  Text(blog.wing, style: GlobalVariables.textBold_14),
                 ],
               ),
             ),

@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CustomTextfield extends StatelessWidget {
+  final TextEditingController controller;
   final String hinttext;
   final double width;
   final double height;
-  const CustomTextfield({Key? key, required this.hinttext, required this.width, required this.height})
+  const CustomTextfield({Key? key, required this.hinttext, required this.width, required this.height, required this.controller})
       : super(key: key);
 
   @override
@@ -22,6 +23,7 @@ class CustomTextfield extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(left: 20, right: 20, top: 16),
         child: TextField(
+          controller: controller,
           decoration: InputDecoration.collapsed(
               hintText: hinttext,
               hintStyle: GoogleFonts.spaceGrotesk(

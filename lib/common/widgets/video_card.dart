@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:youtube/youtube.dart';
 import 'package:zairza_app/constants/global_variables.dart';
 
+import '../../models/video_model.dart';
+
 class VideoCard extends StatelessWidget {
-  final String url;
-  const VideoCard({super.key, required this.url});
+  final Video video;
+
+  const VideoCard({super.key,required this.video});
 
   Future<String?> _fetchThumbnail() async {
-    await Youtube.config(videoId: url);
+    await Youtube.config(videoId: video.url);
     var thumbnails = Youtube.thumbnails;
     return thumbnails.hq; // Return the HQ thumbnail URL
   }
@@ -34,15 +37,15 @@ class VideoCard extends StatelessWidget {
                   )),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.all(16.0),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Flutter vs React Native',
+                Text(video.name,
                     style: GlobalVariables.textBold_14),
                 Text(
-                  'Flutter is better than React Native in everyway Flutter is better than React Native in everyway Flutter is better than React Native in everyway',
+                  video.description,
                   style: GlobalVariables.textRegular_12,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,

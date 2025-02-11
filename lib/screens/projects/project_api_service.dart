@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:zairza_app/constants/global_variables.dart';
 
-class ApiService {
+class ProjectApiService {
   final String baseUrl;
 
-  ApiService() : baseUrl = GlobalVariables.baseUrl;
+  ProjectApiService() : baseUrl = GlobalVariables.baseUrl;
 
   Future<List<dynamic>> retrieveEvents() async {
     final url = Uri.parse('$baseUrl/zairza/retrieveEvent');

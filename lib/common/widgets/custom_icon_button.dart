@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:zairza_app/constants/global_variables.dart';
+import 'package:zairza_app/controllers/authentication/auth_controller.dart';
 
-class CustomIconButton extends StatelessWidget {
-  const CustomIconButton({super.key});
+class CustomIconButton extends StatefulWidget {
+   const CustomIconButton({super.key});
+
+  @override
+  State<CustomIconButton> createState() => _CustomIconButtonState();
+}
+
+class _CustomIconButtonState extends State<CustomIconButton> {
+  final AuthController authController = AuthController();
 
   @override
   Widget build(BuildContext context) {

@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:zairza_app/constants/global_variables.dart';
 import 'package:zairza_app/common/widgets/roadmap_tag.dart';
 
-class SeeMoreRoadMaps extends StatelessWidget {
+import '../../controllers/roadmap/roadmap_controller.dart';
+
+class SeeMoreRoadMaps extends StatefulWidget {
   const SeeMoreRoadMaps({super.key});
 
+  @override
+  State<SeeMoreRoadMaps> createState() => _SeeMoreRoadMapsState();
+}
+
+class _SeeMoreRoadMapsState extends State<SeeMoreRoadMaps> {
+  final roadmapListController _controller = Get.put(roadmapListController());
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -28,108 +37,43 @@ class SeeMoreRoadMaps extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                Image.asset('assets/images/resources_largeBG.png'),
-                Padding(
-                  padding: EdgeInsets.all(width * 0.05581395348),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          const RoadMapTag(text: 'Web Development'),
-                          SizedBox(width: width * 0.02325581395),
-                          const RoadMapTag(text: 'App Development'),
-                          SizedBox(width: width * 0.02325581395),
-                          const RoadMapTag(text: 'CP'),
-                        ],
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  Image.asset('assets/images/resources_largeBG.png'),
+                  Obx((){
+                    if (_controller.isLoading.value) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (_controller.roadmaps.isEmpty) {
+                      return const Center(child: Text('No roadmaps found.'));
+                    }
+                    return SizedBox(
+                      height: 20,
+                      child: Padding(
+                        padding: EdgeInsets.all(width*0.05581395348),
+                        child: Wrap(
+                          direction: Axis.horizontal,
+                          spacing: width * 0.02325581395,
+                          runSpacing: height * 0.01287553648,
+                          children: _controller.roadmaps.map((roadmap) {
+                            return RoadMapTag(
+                              text: roadmap.name, // Display roadmap name
+                              roadmapId: roadmap.id, // Pass roadmap ID for navigation
+                            );
+                          }).toList(),
+                        ),
                       ),
-                      SizedBox(height: height * 0.01287553648),
-                      Row(
-                        children: [
-                          const RoadMapTag(text: 'AI/ML'),
-                          SizedBox(width: width * 0.02325581395),
-                          const RoadMapTag(text: 'Game Development'),
-                          SizedBox(width: width * 0.02325581395),
-                          const RoadMapTag(text: 'ROS'),
-                        ],
-                      ),
-                      SizedBox(height: height * 0.01287553648),
-                      Row(
-                        children: [
-                          const RoadMapTag(text: 'UI/UX'),
-                          SizedBox(width: width * 0.02325581395),
-                          const RoadMapTag(text: 'CP'),
-                          SizedBox(width: width * 0.02325581395),
-                          const RoadMapTag(text: 'Web Development'),
-                          SizedBox(width: width * 0.02325581395),
-                          const RoadMapTag(text: 'Linux'),
-                        ],
-                      ),
-                      SizedBox(height: height * 0.01287553648),
-                      Row(
-                        children: [
-                          const RoadMapTag(text: 'AI/ML'),
-                          SizedBox(width: width * 0.02325581395),
-                          const RoadMapTag(text: 'Game Development'),
-                          SizedBox(width: width * 0.02325581395),
-                          const RoadMapTag(text: 'ROS'),
-                        ],
-                      ),
-                      SizedBox(height: height * 0.01287553648),
-                      Row(
-                        children: [
-                          const RoadMapTag(text: 'Web Development'),
-                          SizedBox(width: width * 0.02325581395),
-                          const RoadMapTag(text: 'UI/UX'),
-                          SizedBox(width: width * 0.02325581395),
-                          const RoadMapTag(text: 'App Dev'),
-                        ],
-                      ),
-                      SizedBox(height: height * 0.01287553648),
-                      Row(
-                        children: [
-                          const RoadMapTag(text: 'AI/ML'),
-                          SizedBox(width: width * 0.02325581395),
-                          const RoadMapTag(text: 'ROS'),
-                          SizedBox(width: width * 0.02325581395),
-                          const RoadMapTag(text: 'Game Development'),
-                          SizedBox(width: width * 0.02325581395),
-                          const RoadMapTag(text: 'Linux'),
-                        ],
-                      ),
-                      SizedBox(height: height * 0.01287553648),
-                      Row(
-                        children: [
-                          const RoadMapTag(text: 'Web Development'),
-                          SizedBox(width: width * 0.02325581395),
-                          const RoadMapTag(text: 'App Development'),
-                          SizedBox(width: width * 0.02325581395),
-                          const RoadMapTag(text: 'CP'),
-                        ],
-                      ),
-                      SizedBox(height: height * 0.01287553648),
-                      Row(
-                        children: [
-                          const RoadMapTag(text: 'ROS'),
-                          SizedBox(width: width * 0.02325581395),
-                          const RoadMapTag(text: 'CP'),
-                          SizedBox(width: width * 0.02325581395),
-                          const RoadMapTag(text: 'UI/UX'),
-                          SizedBox(width: width * 0.02325581395),
-                          const RoadMapTag(text: 'Game Development'),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
+                    );
+
+                  })
+                ],
+              ),
+            ],
+          ),
+        )
+
     );
   }
 }

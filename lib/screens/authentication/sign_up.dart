@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../common/widgets/custom_textfield.dart';
-import '../common/widgets/custom_button.dart';
+import '../../common/widgets/custom_textfield.dart';
+import '../../common/widgets/custom_button.dart';
 import 'package:flutter/gestures.dart';
+
+import '../../controllers/authentication/auth_controller.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -18,6 +22,16 @@ void initState() {
 }
 
 class _SignUpState extends State<SignUp> {
+  final AuthController _authController = Get.put(AuthController());
+
+  // Form fields controllers
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController zairzaIdController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
+
   String? branchValue;
   var branches = [
     'IT',
@@ -32,10 +46,10 @@ class _SignUpState extends State<SignUp> {
 
   String? batchValue;
   var batches = [
-    '2023',
-    '2024',
-    '2025',
-    '2026',
+    '1st Year',
+    '2nd Year',
+    '3rd Year',
+    '4th Year',
   ];
 
   @override
@@ -105,14 +119,16 @@ class _SignUpState extends State<SignUp> {
                       CustomTextfield(
                           hinttext: 'First name',
                           width: (mediaQuery.size.width - 64) * 0.5,
-                          height: mediaQuery.size.height * 0.069),
+                          height: mediaQuery.size.height * 0.069,
+                          controller: firstNameController,),
                       const SizedBox(
                         width: 16,
                       ),
                       CustomTextfield(
                           hinttext: 'Last name',
                           width: (mediaQuery.size.width - 64) * 0.5,
-                          height: mediaQuery.size.height * 0.069),
+                          height: mediaQuery.size.height * 0.069,
+                          controller: lastNameController,),
                     ],
                   ),
                   SizedBox(
@@ -121,7 +137,8 @@ class _SignUpState extends State<SignUp> {
                   CustomTextfield(
                       hinttext: 'E-mail',
                       width: mediaQuery.size.width - 48,
-                      height: mediaQuery.size.height * 0.069),
+                      height: mediaQuery.size.height * 0.069,
+                      controller: emailController,),
                   SizedBox(
                     height: mediaQuery.size.height * 0.017,
                   ),
@@ -139,6 +156,7 @@ class _SignUpState extends State<SignUp> {
                       padding: const EdgeInsets.only(left: 20),
                       child: Stack(alignment: Alignment.centerRight, children: [
                         TextField(
+                          controller: passwordController,
                           obscureText: isTapped,
                           decoration: InputDecoration.collapsed(
                               hintText: 'Password',
@@ -171,7 +189,8 @@ class _SignUpState extends State<SignUp> {
                   CustomTextfield(
                       hinttext: 'Zairza ID',
                       width: mediaQuery.size.width - 48,
-                      height: mediaQuery.size.height * 0.069),
+                      height: mediaQuery.size.height * 0.069,
+                      controller: zairzaIdController,),
                   SizedBox(
                     height: mediaQuery.size.height * 0.017,
                   ),
@@ -275,7 +294,8 @@ class _SignUpState extends State<SignUp> {
                   CustomTextfield(
                     hinttext: 'Phone number',
                     width: mediaQuery.size.width - 48,
-                    height: mediaQuery.size.height * 0.069,
+                    height: mediaQuery.size.height * 0.069, 
+                    controller: phoneNumberController,
                   ),
                   SizedBox(
                     height: mediaQuery.size.height * 0.034,
@@ -285,7 +305,18 @@ class _SignUpState extends State<SignUp> {
                     children: [
                       CustomButton(
                         text: 'Sign up',
-                        onTap: () {},
+                        onTap: () async {
+                          await _authController.register(
+                            firstName: firstNameController.text ,
+                            secondName: lastNameController.text,
+                            registrationNumber: zairzaIdController.text,
+                            branch: branchValue!,
+                            phoneNumber: phoneNumberController.text,
+                            email: emailController.text,
+                            password: passwordController.text,
+                            batch: batchValue!,
+                          );
+                        },
                         width: mediaQuery.size.width - 52,
                         icon: Image.asset('assets/icons/tick.png'),
                       ),
@@ -308,7 +339,9 @@ class _SignUpState extends State<SignUp> {
                                   color: Color(0xffFF8B2C),
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold),
-                              recognizer: TapGestureRecognizer()..onTap = () {},
+                              recognizer: TapGestureRecognizer()..onTap = () {
+
+                              },
                             ),
                           ],
                         ),

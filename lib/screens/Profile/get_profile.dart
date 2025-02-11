@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:zairza_app/constants/global_variables.dart';
+import '../../controllers/authentication/auth_controller.dart';
+
 
 class ProfileApiService {
   final String baseUrl;

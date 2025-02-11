@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:zairza_app/common/widgets/custom_icon_button.dart';
 import 'package:zairza_app/common/widgets/project_card.dart';
 import 'package:zairza_app/constants/global_variables.dart';
 import 'package:zairza_app/screens/Profile/get_profile.dart';
+
+import '../controllers/authentication/auth_controller.dart';
+import '../controllers/authentication/profile_controller.dart';
 
 class MyProfile extends StatefulWidget {
   const MyProfile({super.key});
@@ -12,6 +17,15 @@ class MyProfile extends StatefulWidget {
 }
 
 class _MyProfileState extends State<MyProfile> {
+  final AuthController _authController = Get.put(AuthController()); // Initialize controller
+  final ProfileController _profileController = Get.put(ProfileController());
+
+  @override
+  void initState() {
+    super.initState();
+    _profileController.fetchProfile(); // Fetch profile data on initialization
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -42,6 +56,13 @@ class _MyProfileState extends State<MyProfile> {
                                 .copyWith(color: Colors.black)),
                         const Spacer(),
                         const CustomIconButton(),
+                        ElevatedButton(
+                          onPressed: () async {
+                            //temporarily added logout button
+                            await _authController.logout();
+                          },
+                          child: Text('Logout'),
+                        ),
                       ],
                     ),
                   )),
@@ -289,3 +310,165 @@ class _MyProfileState extends State<MyProfile> {
         });
   }
 }
+
+
+//
+//
+// class MyProfile extends StatefulWidget {
+//   const MyProfile({super.key});
+//
+//   @override
+//   State<MyProfile> createState() => _MyProfileState();
+// }
+//
+// class _MyProfileState extends State<MyProfile> {
+//   final AuthController _authController = Get.put(AuthController());
+//   final ProfileController _profileController = Get.put(ProfileController());
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     _profileController.fetchProfile(); // Fetch profile data on initialization
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     double height = MediaQuery.of(context).size.height;
+//     double width = MediaQuery.of(context).size.width;
+//
+//     return Obx(() {
+//       if (_profileController.isLoading.value) {
+//         // Show loading indicator while fetching data
+//         return const Center(child: CircularProgressIndicator());
+//       }
+//
+//       final profile = _profileController.profile;
+//
+//       if (profile.isEmpty) {
+//         // Handle case where no profile data is available
+//         return const Center(
+//           child: Text("Failed to load profile. Please try again."),
+//         );
+//       }
+//
+//       // Main Profile UI with fetched data
+//       return Scaffold(
+//         appBar: AppBar(
+//           toolbarHeight: height * 0.09451,
+//           backgroundColor: Colors.white,
+//           elevation: 0,
+//           title: Row(
+//             children: [
+//               Text(
+//                 'My Profile',
+//                 style: TextStyle(
+//                   fontSize: 24,
+//                   fontWeight: FontWeight.bold,
+//                   color: Colors.black,
+//                 ),
+//               ),
+//               const Spacer(),
+//               ElevatedButton(
+//                 onPressed: () async {
+//                   //temporarily added logout button
+//                           await _authController.logout();
+//                 },
+//                 child: const Text('Logout'),
+//               ),
+//             ],
+//           ),
+//         ),
+//         body: SingleChildScrollView(
+//           child: Padding(
+//             padding: EdgeInsets.symmetric(horizontal: width * 0.055),
+//             child: Column(
+//               children: [
+//                 // Profile Info
+//                 Container(
+//                   width: width * 0.888,
+//                   decoration: BoxDecoration(
+//                     color: Colors.white,
+//                     boxShadow: [
+//                       BoxShadow(color: Colors.grey.withOpacity(0.5), blurRadius: 5)
+//                     ],
+//                     borderRadius: BorderRadius.circular(8),
+//                     border: Border.all(width: 2),
+//                   ),
+//                   child: Padding(
+//                     padding: EdgeInsets.symmetric(
+//                       horizontal: width * 0.037,
+//                       vertical: width * 0.037,
+//                     ),
+//                     child: Column(
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: [
+//                         Row(
+//                           children: [
+//                             // Profile Image
+//                             Container(
+//                               height: height * 0.068,
+//                               width: height * 0.068,
+//                               decoration: BoxDecoration(
+//                                 color: Colors.white,
+//                                 borderRadius: BorderRadius.circular(4),
+//                                 border: Border.all(width: 2),
+//                               ),
+//                               child: ClipRRect(
+//                                 borderRadius: BorderRadius.circular(2),
+//                                 child: Image.asset(
+//                                     'assets/images/profile/profilePhoto/Profile1.png'),
+//                               ),
+//                             ),
+//                             SizedBox(width: width * 0.05),
+//                             // User Details
+//                             Column(
+//                               crossAxisAlignment: CrossAxisAlignment.start,
+//                               children: [
+//                                 Text(
+//                                   profile['name'] ?? "No Name",
+//                                   style: const TextStyle(
+//                                     fontSize: 20,
+//                                     fontWeight: FontWeight.bold,
+//                                   ),
+//                                 ),
+//                                 Text(
+//                                   '${profile['branch']} | Batch ${profile['batch']}',
+//                                   style: const TextStyle(
+//                                     fontSize: 12,
+//                                     color: Colors.grey,
+//                                   ),
+//                                 ),
+//                                 Text(
+//                                   profile['zairza_id'] ?? "No Zairza ID",
+//                                   style: const TextStyle(fontSize: 12),
+//                                 ),
+//                               ],
+//                             ),
+//                           ],
+//                         ),
+//                         SizedBox(height: height * 0.02),
+//                         // Skills
+//                         Text(
+//                           'Domain -',
+//                           style: TextStyle(
+//                             fontSize: 16,
+//                             fontWeight: FontWeight.bold,
+//                             color: Colors.blue,
+//                           ),
+//                         ),
+//                         Text(
+//                           (profile['skills'] as List).join(' | '),
+//                           style: const TextStyle(fontSize: 14),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ),
+//       );
+//     });
+//   }
+// }
