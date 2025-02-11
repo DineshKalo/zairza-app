@@ -1,12 +1,25 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zairza_app/common/widgets/custom_button.dart';
-import '../common/widgets/custom_textfield.dart';
+import 'package:zairza_app/screens/authentication/sign_up.dart';
+import '../../Nav.dart';
+import '../../common/widgets/custom_textfield.dart';
+import '../../controllers/authentication/auth_controller.dart';
 
-class SignIn extends StatelessWidget {
+class SignIn extends StatefulWidget {
   const SignIn({super.key});
 
+  @override
+  State<SignIn> createState() => _SignInState();
+}
+
+class _SignInState extends State<SignIn> {
+  final TextEditingController email_controller = TextEditingController();
+  final TextEditingController pw_controller = TextEditingController();
+  final AuthController auth_controller = Get.put(AuthController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,7 +132,8 @@ class SignIn extends StatelessWidget {
                       CustomTextfield(
                           hinttext: 'Zairza ID / E-mail',
                           width: MediaQuery.of(context).size.width - 64 * 0.5,
-                          height: MediaQuery.of(context).size.height * 0.069),
+                          height: MediaQuery.of(context).size.height * 0.069,
+                          controller: email_controller,),
                       const SizedBox(
                         width: 16,
                       ),
@@ -129,7 +143,8 @@ class SignIn extends StatelessWidget {
                       CustomTextfield(
                           hinttext: 'Password',
                           width: MediaQuery.of(context).size.width - 64 * 0.5,
-                          height: MediaQuery.of(context).size.height * 0.069),
+                          height: MediaQuery.of(context).size.height * 0.069,
+                          controller: pw_controller,),
                     ],
                   ),
                   SizedBox(
@@ -156,27 +171,46 @@ class SignIn extends StatelessWidget {
                     children: [
                       CustomButton(
                         text: 'Sign In',
-                        onTap: () {},
+                        onTap: () async {
+                          // Trigger the login method from the AuthController
+                          bool success = await auth_controller.login(
+                            email: email_controller.text,
+                            password: pw_controller.text,
+                          );
+
+                          if (success) {
+                            // navigate to the dashboard
+                            Get.offAll(() => NavigationBarPage(givenIndex: 0));
+                          } else {
+                            // Show error message if login fails
+                            Get.snackbar('Error', 'Invalid credentials, please try again.');
+                          }
+                        },
                         width: MediaQuery.of(context).size.width - 52,
                         icon: Image.asset('assets/arrow-right-line.png'),
                       ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.015,
                       ),
-                      Center(
-                        child: RichText(
-                          text: const TextSpan(
-                            children: [
-                              TextSpan(
-                                  text: 'Already have an account?',
-                                  style: TextStyle(color: Colors.black)),
-                              TextSpan(
-                                text: 'Login',
-                                style: TextStyle(
-                                  color: Color(0xffFF8B2C),
+                      InkWell(
+                        onTap: (){
+                          Get.to(const SignUp());
+                        },
+                        child: Center(
+                          child: RichText(
+                            text: const TextSpan(
+                              children: [
+                                TextSpan(
+                                    text: "Don't have an account?" ,
+                                    style: TextStyle(color: Colors.black)),
+                                TextSpan(
+                                  text: 'Sign Up',
+                                  style: TextStyle(
+                                    color: Color(0xffFF8B2C),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),

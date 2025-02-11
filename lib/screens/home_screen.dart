@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zairza_app/common/widgets/carousel.dart';
 import 'package:zairza_app/common/widgets/custom_icon_button.dart';
@@ -7,9 +9,17 @@ import 'package:zairza_app/common/widgets/home_card.dart';
 import 'package:zairza_app/constants/global_variables.dart';
 import 'package:zairza_app/screens/projects/project_list.dart';
 
-class HomeScreen extends StatelessWidget {
+import '../controllers/events/event_controller.dart';
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final EventController eventController = Get.put(EventController());
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -73,16 +83,26 @@ class HomeScreen extends StatelessWidget {
                 ),
                 SizedBox(
                     height: height * 0.3150944206,
-                    child: ListView.builder(
+                    child: Obx(() {
+                      if (eventController.isLoading.value) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      if (eventController.events.isEmpty) {
+                        return const Center(child: Text("No events found."));
+                      }
+                      return ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemBuilder: (BuildContext context, index) {
-                          return Padding(
-                            padding:
-                                EdgeInsets.only(left: width * 0.0465116279),
-                            child: const HomeCard(),
-                          );
-                        })),
+                        padding: const EdgeInsets.all(16),
+                        itemCount: eventController.events.length,
+                        itemBuilder: (context, index) {
+                          final event = eventController.events[index];
+                          return  Padding(
+                            padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.0465116279),
+                            child:HomeCard(event: event),
+                          ); // Pass each event to HomeCard
+                        },
+                      );
+                    })),
                 SizedBox(height: height * 0.03004291845),
                 Padding(
                   padding:
@@ -116,7 +136,7 @@ class HomeScreen extends StatelessWidget {
                         right: width * 0.05581395348,
                         bottom: height * 0.02145922746),
                     child: const ProjectsList(
-                      maxProjectsToShow: 3,
+                      maxProjectsToShow: 2,
                     ))
               ],
             ),

@@ -29,7 +29,9 @@ class OnGoingProjects extends StatelessWidget {
                   EdgeInsets.symmetric(horizontal: width * 0.01860465116 * 2)),
               elevation: const MaterialStatePropertyAll(0),
             ),
-            const ProjectsList()
+            const ProjectsList(
+              state: "Ongoing",
+            )
           ]),
         ),
       ),

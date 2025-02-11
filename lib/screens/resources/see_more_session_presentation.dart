@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:zairza_app/controllers/session/session_controller.dart';
 
 import '../../common/widgets/session_tag.dart';
 import '../../constants/global_variables.dart';
@@ -8,6 +11,7 @@ class SeeMoreSessionPresentation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sessionListController _listController = Get.put(sessionListController());
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -33,89 +37,32 @@ class SeeMoreSessionPresentation extends StatelessWidget {
       body: Stack(
         children: [
           Image.asset('assets/images/resources_largeBG.png'),
-          Padding(
-            padding: EdgeInsets.all(width * 0.05581395348),
-            child: Column(
-              children: [
-                Row(
-                    children: [
-                      const SessionTag(tagName: 'Web Development'),
-                      SizedBox(width: width * 0.02325581395),
-                      const SessionTag(tagName: 'Game Development')
-                    ],
-                  ),
-                SizedBox(height: height * 0.010),
-                Row(
-                  children: [
-                    const SessionTag(tagName: 'ROS'),
-                    SizedBox(width: width * 0.02325581395),
-                    const SessionTag(tagName: 'App Development'),
-                    SizedBox(width: width * 0.02325581395),
-                    const SessionTag(tagName: 'CP'),
-                    SizedBox(width: width * 0.02325581395),
-                  ],
+          Obx((){
+            if (_listController.isLoading.value) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (_listController.sessions.isEmpty) {
+              return const Center(child: Text('No session found.'));
+            }
+            return SizedBox(
+              height: 20,
+              child: Padding(
+                padding: EdgeInsets.all(width*0.05581395348),
+                child: Wrap(
+                  direction: Axis.horizontal,
+                  spacing: width * 0.02325581395,
+                  runSpacing: height * 0.01287553648,
+                  children: _listController.sessions.map((roadmap) {
+                    return SessionTag(
+                      tagName: roadmap.name, // Display roadmap name
+                      sessionId: roadmap.id, // Pass roadmap ID for navigation
+                    );
+                  }).toList(),
                 ),
-                SizedBox(height: height * 0.010),
-                Row(
-                    children: [
-                      const SessionTag(tagName: 'Web Development'),
-                      SizedBox(width: width * 0.02325581395),
-                      const SessionTag(tagName: 'Game Development')
-                    ],
-                  ),
-                SizedBox(height: height * 0.010),
-                Row(
-                  children: [
-                    const SessionTag(tagName: 'ROS'),
-                    SizedBox(width: width * 0.02325581395),
-                    const SessionTag(tagName: 'App Development'),
-                    SizedBox(width: width * 0.02325581395),
-                    const SessionTag(tagName: 'CP'),
-                    SizedBox(width: width * 0.02325581395),
-                  ],
-                ),
-                SizedBox(height: height * 0.010),
-                Row(
-                    children: [
-                      const SessionTag(tagName: 'Web Development'),
-                      SizedBox(width: width * 0.02325581395),
-                      const SessionTag(tagName: 'Game Development')
-                    ],
-                  ),
-                SizedBox(height: height * 0.010),
-                Row(
-                  children: [
-                    const SessionTag(tagName: 'ROS'),
-                    SizedBox(width: width * 0.02325581395),
-                    const SessionTag(tagName: 'App Development'),
-                    SizedBox(width: width * 0.02325581395),
-                    const SessionTag(tagName: 'CP'),
-                    SizedBox(width: width * 0.02325581395),
-                  ],
-                ),
-                SizedBox(height: height * 0.010),
-                Row(
-                    children: [
-                      const SessionTag(tagName: 'Web Development'),
-                      SizedBox(width: width * 0.02325581395),
-                      const SessionTag(tagName: 'Game Development')
-                    ],
-                  ),
-                SizedBox(height: height * 0.010),
-                Row(
-                  children: [
-                    const SessionTag(tagName: 'ROS'),
-                    SizedBox(width: width * 0.02325581395),
-                    const SessionTag(tagName: 'App Development'),
-                    SizedBox(width: width * 0.02325581395),
-                    const SessionTag(tagName: 'CP'),
-                    SizedBox(width: width * 0.02325581395),
-                  ],
-                ),
-                SizedBox(height: height * 0.010),
-              ],
-            ),
-          ),
+              ),
+            );
+
+          })
           
         ],
       ),
