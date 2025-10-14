@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  final String baseUrl = "https://zairzaappbackend.onrender.com/zairza";
+  final String baseUrl = "https://zairza-app-backend.vercel.app/zairza";
   final http.Client client = http.Client();
 
   // Default timeout duration for requests
@@ -21,31 +21,29 @@ class ApiService {
 
       return _processResponse(response);
     } catch (e) {
-      // Handle errors like timeout or connectivity issues
       rethrow;
     }
   }
 
   // GET request
-  Future<dynamic> get(String endpoint, {String? token, Map<String, String>? headers}) async {
-    try {
-      final headers = {
-        if (token != null) "Authorization": token,
-        "Content-Type": "application/json",
+  Future<dynamic> get(String endpoint, {String? token}) async {
+  try {
+    final headers = {
+      if (token != null) "Authorization": "Bearer $token", // Added Bearer prefix
+      "Content-Type": "application/json",
+    };
+    final response = await client
+        .get(
+      Uri.parse("$baseUrl/$endpoint"),
+      headers: headers,
+    )
+        .timeout(timeoutDuration);
 
-      };
-      final response = await client
-          .get(
-        Uri.parse("$baseUrl/$endpoint"),
-        headers: headers,
-      )
-          .timeout(timeoutDuration);
-
-      return _processResponse(response);
-    } catch (e) {
-      rethrow;
-    }
+    return _processResponse(response);
+  } catch (e) {
+    rethrow;
   }
+}
 
   // Process the response and handle success or error
   dynamic _processResponse(http.Response response) {

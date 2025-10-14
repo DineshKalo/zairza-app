@@ -18,7 +18,7 @@ class ProjectController extends GetxController{
  }
 
  Future<void> fetchProjects() async {
-  const String apiUrl = "https://zairzaappbackend.onrender.com/zairza/retrieveProjects";
+  const String apiUrl = "https://zairza-app-backend.vercel.app/zairza/retrieveProjects";
   try {
    isLoading(true);
    final response = await http.get(Uri.parse(apiUrl));
@@ -39,7 +39,7 @@ class ProjectController extends GetxController{
 
  Future<void> fetchProjectsByID( String ID) async{
   const ID = "";
-  const String apiUrl = "https://zairzaappbackend.onrender.com/zairza/retrieveProjects/$ID";
+  const String apiUrl = "https://zairza-app-backend.vercel.app/zairza/retrieveProjects/$ID";
   try{
    final response = await http.get(Uri.parse(apiUrl));
    if(response.statusCode == 200){

@@ -9,7 +9,7 @@ class Keys {
 
 class GlobalVariables {
   //base URL
-  static const baseUrl = "https://zairza-app-backend.onrender.com";
+  static const baseUrl = "https://zairza-app-backend.vercel.app";
 
   //shadow effect
   static const shadowEffect = [

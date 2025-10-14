@@ -16,7 +16,7 @@ class sessionListController extends GetxController{
   }
 
   Future<void> fetchSession () async{
-    const String apiUrl = "https://zairzaappbackend.onrender.com/zairza/getSession";
+    const String apiUrl = "https://zairza-app-backend.vercel.app/zairza/getSession";
     try{
       isLoading(true);
       final response = await http.get(Uri.parse(apiUrl));
@@ -42,7 +42,7 @@ class sessionController extends GetxController{
 
   Future<void> fetchSessionByID( String ID) async{
 
-    final String apiUrl = "https://zairzaappbackend.onrender.com/zairza/getSession/$ID" ;
+    final String apiUrl = "https://zairza-app-backend.vercel.app/zairza/getSession/$ID" ;
     try{
       isLoading(true);
       final response = await http.get(Uri.parse(apiUrl));

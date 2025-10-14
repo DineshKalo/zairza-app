@@ -13,7 +13,7 @@ class BlogController extends GetxController {
 
   // Fetch all blogs
   Future<void> fetchBlogs() async {
-    const String apiUrl = "https://zairzaappbackend.onrender.com/zairza/getBlogs";
+    const String apiUrl = "https://zairza-app-backend.vercel.app/zairza/getBlogs";
     try {
       isLoading(true);
       final response = await apiService.get('getBlogs');
@@ -28,7 +28,7 @@ class BlogController extends GetxController {
   //fetch Blog by ID
   Future<void> fetchBlogByID( String ID) async{
     const ID = "";
-    const String apiUrl = "https://zairzaappbackend.onrender.com/zairza/getBlogs/$ID";
+    const String apiUrl = "https://zairza-app-backend.vercel.app/zairza/getBlogs/$ID";
     try{
       final response = await http.get(Uri.parse(apiUrl));
       if(response.statusCode == 200){

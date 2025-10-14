@@ -16,7 +16,7 @@ class roadmapListController extends GetxController{
   }
 
   Future<void> fetchRoadmap () async{
-    const String apiUrl = "https://zairzaappbackend.onrender.com/zairza/getRoadmap";
+    const String apiUrl = "https://zairza-app-backend.vercel.app/zairza/getRoadmap";
     try{
       isLoading(true);
       final response = await http.get(Uri.parse(apiUrl));
@@ -46,7 +46,7 @@ class roadmapController extends GetxController{
 
   Future<void> fetchRoadmapByID( String ID) async{
 
-    final String apiUrl = "https://zairzaappbackend.onrender.com/zairza/getRoadmap/$ID" ;
+    final String apiUrl = "https://zairza-app-backend.vercel.app/zairza/getRoadmap/$ID" ;
     try{
       isLoading(true);
       final response = await http.get(Uri.parse(apiUrl));

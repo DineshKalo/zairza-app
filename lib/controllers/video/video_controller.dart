@@ -13,7 +13,7 @@ class VideoController extends  GetxController{
     fetchVideos();
   }
   Future<void> fetchVideos() async{
-    const String apiUrl = "https://zairzaappbackend.onrender.com/zairza/getVideos";
+    const String apiUrl = "https://zairza-app-backend.vercel.app/zairza/getVideos";
     try{
       isLoading(true);
       final response = await http.get(Uri.parse(apiUrl));

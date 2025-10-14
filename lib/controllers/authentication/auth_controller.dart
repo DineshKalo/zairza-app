@@ -55,26 +55,28 @@ class AuthController extends GetxController {
       });
 
       isLoading.value = false;
-      if (response['success'] == true) {
-        return true;
-      } else {
-        Get.snackbar("Error", response['message'] ?? "Registration failed");
-        return false;
-      }
-    } catch (e) {
-      isLoading.value = false;
-      print("Error: $e");
+    if (response['success'] == true) {
+      Get.snackbar("Success", "Registration successful!");
+      Get.offAll(() => SignIn()); // Navigate to login
+      return true;
+    } else {
+      Get.snackbar("Error", response['message'] ?? "Registration failed");
       return false;
     }
+  } catch (e) {
+    isLoading.value = false;
+    Get.snackbar("Error", "Registration failed: $e");
+    return false;
   }
+}
 
   // Login user
   Future<bool> login({required String email, required String password}) async {
     isLoading.value = true;
     try {
       final response = await apiService.post("login", {
-        'input': email,
-        'password': password,
+        "input": email,
+        "password": password,
       });
 
       if (response['token'] != null) {
@@ -111,8 +113,15 @@ class AuthController extends GetxController {
 
 
   Future<UserModel> fetchUserByToken(String token) async {
-    final response = await apiService.get('user/profile', headers: {'Authorization': 'Bearer $token'});
-    return UserModel.fromJson(response['data']);
-
+  try {
+    final response = await apiService.get('getprofile', token: token);
+    if (response['success'] == true) {
+      return UserModel.fromJson(response['data']);
+    } else {
+      throw Exception('Failed to fetch user');
+    }
+  } catch (e) {
+    throw Exception('Failed to fetch user: $e');
   }
+}
 }

@@ -1,0 +1,2 @@
+/Users/narottamkalo/Downloads/zairza-app/android/app/.cxx/Debug/2s2dm2l4/x86_64/CMakeFiles/edit_cache.dir
+/Users/narottamkalo/Downloads/zairza-app/android/app/.cxx/Debug/2s2dm2l4/x86_64/CMakeFiles/rebuild_cache.dir

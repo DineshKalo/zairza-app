@@ -174,8 +174,8 @@ class _SignInState extends State<SignIn> {
                         onTap: () async {
                           // Trigger the login method from the AuthController
                           bool success = await auth_controller.login(
-                            email: email_controller.text,
-                            password: pw_controller.text,
+                            email: email_controller.text.toString(),
+                            password: pw_controller.text.toString(),
                           );
 
                           if (success) {

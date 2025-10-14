@@ -13,7 +13,7 @@ class EventController extends GetxController {
 
   // Fetch all blogs
   Future<void> fetchEvents() async {
-    const String apiUrl = "https://zairzaappbackend.onrender.com/zairza/retrieveEvent";
+    const String apiUrl = "https://zairza-app-backend.vercel.app/zairza/retrieveEvent";
     try {
       isLoading(true);
       final response = await apiService.get('retrieveEvent');
@@ -28,7 +28,7 @@ class EventController extends GetxController {
   //fetch Blog by ID
   Future<void> fetchEventByID( String ID) async{
     const ID = "";
-    const String apiUrl = "https://zairzaappbackend.onrender.com/zairza/retrieveEvent/$ID";
+    const String apiUrl = "https://zairza-app-backend.vercel.app/zairza/retrieveEvent/$ID";
     try{
       final response = await http.get(Uri.parse(apiUrl));
       if(response.statusCode == 200){

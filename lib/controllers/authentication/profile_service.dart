@@ -8,18 +8,15 @@ class ProfileService {
     try {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token');
-      // print('Saved Token: $token');
-      // print('Headers being sent: {"Authorization": "Bearer $token"}');
 
-      if (token == null|| token.isEmpty) {
+      if (token == null || token.isEmpty) {
         throw Exception("No authentication token found. Please log in.");
       }
-      final headers = {
-        "Authorization": "$token", 
-      };
+
+      // Use the token parameter instead of headers for consistency
       final response = await _apiService.get(
-        "getProfile",
-        headers: headers,
+        "user/profile", // Changed endpoint to match your auth controller
+        token: token, // Use the token parameter
       );
 
       if (response['success'] == true) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:zairza_app/screens/authentication/sign_in.dart';
 import '../../common/widgets/custom_textfield.dart';
 import '../../common/widgets/custom_button.dart';
 import 'package:flutter/gestures.dart';
@@ -22,6 +23,13 @@ void initState() {
 }
 
 class _SignUpState extends State<SignUp> {
+  bool isTapped = true;
+  
+  @override
+  void initState() {
+    super.initState();
+    isTapped = true;
+  }
   final AuthController _authController = Get.put(AuthController());
 
   // Form fields controllers
@@ -187,7 +195,7 @@ class _SignUpState extends State<SignUp> {
 
                   //zairza id
                   CustomTextfield(
-                      hinttext: 'Zairza ID',
+                      hinttext: 'Registration number',
                       width: mediaQuery.size.width - 48,
                       height: mediaQuery.size.height * 0.069,
                       controller: zairzaIdController,),
@@ -323,27 +331,32 @@ class _SignUpState extends State<SignUp> {
                       SizedBox(
                         height: mediaQuery.size.height * 0.017,
                       ),
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            const TextSpan(
-                              text: 'Have an account ? ',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            TextSpan(
-                              text: 'Sign in',
-                              style: const TextStyle(
-                                  color: Color(0xffFF8B2C),
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold),
-                              recognizer: TapGestureRecognizer()..onTap = () {
-
-                              },
-                            ),
-                          ],
+                      InkWell(
+                        onTap: (){
+                          Get.to(const SignIn());
+                        },
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              const TextSpan(
+                                text: 'Have an account ? ',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              TextSpan(
+                                text: 'Sign in',
+                                style: const TextStyle(
+                                    color: Color(0xffFF8B2C),
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold),
+                                recognizer: TapGestureRecognizer()..onTap = () {
+                        
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       )
                     ],

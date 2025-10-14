@@ -4,6 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zairza_app/constants/global_variables.dart';
 import 'package:zairza_app/models/user_model.dart';
+import 'package:zairza_app/screens/authentication/sign_up.dart';
 import 'package:zairza_app/screens/card_details.dart';
 import 'package:zairza_app/screens/home_screen.dart';
 import 'package:zairza_app/screens/resources/inventory.dart';
@@ -15,7 +16,6 @@ import 'screens/authentication/sign_in.dart';
 import 'nav.dart';
 
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'features/auth_screen.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 
 
@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: GlobalVariables.appbarColor,
         fontFamily: GoogleFonts.spaceGrotesk().fontFamily,
       ),
-      home:  NavigationBarPage(givenIndex: 0),
+      home:  AuthWrapper(),
       routes: {
         '/home': (context) => const HomeScreen(),
         '/home_card': (context) => const CardDetails(),
@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
 class AuthWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final authController = Get.put(AuthController());
+    final authController = Get.find<AuthController>();
 
     // calling restoreSession() in the initialization.
     authController.restoreSession();
